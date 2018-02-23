@@ -32,7 +32,7 @@ function beginTimer(pomo_len, break_len, name, user, id){
     } else if(pomoDuration == Pcounter && !Bcounter){
       pomodoroes++;
       Bcounter = 1;
-      var img = '<img id="img"src="http://www.myiconfinder.com/uploads/iconsets/128-128-154e2a21720dd28b060e6981c381dc6d-tomato.png" width="32px">';
+      var img = '<img id="img"src="pomo_img.png" width="32px">';
       appendHtml(pomo_box, img);
     } else {
       Bcounter++;
