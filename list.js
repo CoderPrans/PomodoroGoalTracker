@@ -1,12 +1,13 @@
 
 function appendPre(message) {
   var pre = document.getElementById('list');
-  var textContent = document.createTextNode(message + '\n' + '\n');
-  pre.appendChild(textContent);
+  var li = document.createElement("li");
+  li.innerHTML = message;
+  pre.appendChild(li);
 }
 
 function listUpcomingEvents() {
-  document.getElementById("list").innerHTML = '';
+  // document.getElementById("list").innerHTML = '';
   gapi.client.calendar.events.list({
     'calendarId': 'primary',
     'timeMin': (new Date()).toISOString(),
@@ -17,20 +18,19 @@ function listUpcomingEvents() {
   }).then(function(response) {
     var events = response.result.items;
     console.log(events);
-    appendPre('Upcoming events:');
 
     var goals = events.filter(function(x){ return x.summary.slice(0, 6) == ":pomo:" });
     console.log(goals);
     if (goals.length > 0) {
-      for (i = 0; i < 10; i++) {
+      for (i = 0; i < 5; i++) {
         var event = goals[i];
         var when = event.start.dateTime;
           if (!when) {
             when = event.start.date;
           }
-          appendPre(format(when) + " pomo: " + event.description.slice(0, 3) + " break: " + event.description.slice(8, 11) + event.summary.slice(6));
+          appendPre("<b>"+event.summary.slice(6) +'</b><br /><br />'+  format(when) + '<br /><i>'+ "pomo: " + Number(event.description.slice(0, 2)) + "' break: " + Number(event.description.slice(8, 10)) + "'</i><br/>");
       }
-
+      var eventId = goals[0].id; // next most recent event's id
       // countdown to event
       var counter = 0;
       var d = new Date();
@@ -58,8 +58,8 @@ function listUpcomingEvents() {
           clearInterval(countdown);
           pomo_timer.style.display = 'block';
           timer.style.display = 'none';
-          para.innerHTML = "<b>"+ goals[0].summary.slice(6) +"</b>";
-          beginTimer(pomo_len, break_len, goals[0].summary.slice(6), data_user);
+          para.innerHTML = "<h2>"+ goals[0].summary.slice(6) +"</h2>";
+          beginTimer(pomo_len, break_len, goals[0].summary.slice(6), data_user, eventId);
         } else {
           counter++;
           timer.innerHTML = formTime(timeLeft - counter);
@@ -81,23 +81,26 @@ function listData(){
 
   function gotData(snap){
     var pre = document.getElementById("track");
-    var txt = document.createTextNode("Completed Goals: " + '\n' + '\n');
-    pre.appendChild(txt);
-    var instance = document.createElement("pre");
+    var instance = document.createElement("p");
     if(snap.val() !== null){
       var dataSnap = snap.val();
       var goals = Object.keys(dataSnap);
       for(var i = 0; i < goals.length; i++){
-        var goalsData = dataSnap[goals[i]]
-        var goalMeta = document.createTextNode(goals[i]+"   pomo: "+goalsData.pomoDuration+" break: "+goalsData.breakDuration + '\n');
-        instance.appendChild(goalMeta);
-        var hr = document.createElement("hr");
-        instance.appendChild(hr);
+        var goalsData = dataSnap[goals[i]];
+        var li1 = document.createElement("p");
+        li1.innerHTML = "<b>"+goals[i]+"</b><br/><i>pomo: "+goalsData.pomoDuration+"' break: "+goalsData.breakDuration+"'</i><br/>";
+        // var goalMeta = document.createTextNode();
+        instance.appendChild(li1);
+        // var hr = document.createElement("hr");
+        // instance.appendChild(hr);
         for(var j in goalsData){
           if(j === "breakDuration") break;
           var timeStamp = j.slice(0, -3);
-          var session = document.createTextNode(timeStamp + " > " + goalsData[j] + '\n' + '\n');
-          instance.appendChild(session);
+          var li2 = document.createElement("p");
+          li2.style.background = 'moccasin';
+          li2.innerHTML = timeStamp + " > " + goalsData[j] + '<br/>';
+          // var session = document.createTextNode();
+          instance.appendChild(li2);
         }
       }
     pre.appendChild(instance);

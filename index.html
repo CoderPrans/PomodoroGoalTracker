@@ -2,242 +2,252 @@
 <html lang="en">
 
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="icon" href="http://www.myiconfinder.com/uploads/iconsets/128-128-154e2a21720dd28b060e6981c381dc6d-tomato.png">
+  <link rel="stylesheet" type="text/css" href="style.css">
   <title>Pomodoro goal tracker</title>
 </head>
 
-<body style="text-align: center;font-family: "Times New Roman", Times, serif;">
-<h2> <img src="http://www.myiconfinder.com/uploads/iconsets/128-128-154e2a21720dd28b060e6981c381dc6d-tomato.png" width="20px"> Pomodoro Goal Tracker </h2>
-<hr>
-<hr>
+<body>
+  <div id="header">
+    <h2> <img src="http://www.myiconfinder.com/uploads/iconsets/128-128-154e2a21720dd28b060e6981c381dc6d-tomato.png" width="20px"> Pomodoro Goal Tracker </h2>
+  </div>
 
-<div>
-  <p id="user" style="text-align: left; font-style: helvetica;"></p>
-  <button id="authorize-button" style="display: none;">Authorize</button>
-  <button id="signout-button" style="display: none;">Sign Out</button>
+<div id="timer-zone">
+  <div id="signin-status">
+    <p id="user" style="text-align: left; margin: 0;"></p>
+    <button id="authorize-button">AUTHORIZE</button>
+    <button id="signout-button">SIGN OUT</button>
+
+  </div>
+
+  <!-- countdown timer -->
+  <div id="countdown">
+    <p id="starts"></p>
+    <h1 id="timer"></h1>
+  </div>
+
+    <!-- the pomodoro timer -->
+    <div id="pomo_timer" style="display: none;">
+      <div id="pomo-div">
+        <h1 id="pomo"></h1>
+      </div>
+    <button id="end_session" onclick="endSession()">END</button>
+    <div id="pomo_box"></div>
+  </div>
 </div>
 
-  <p id="starts"></p>
-  <h1 id="timer"></h1>
-  <!-- the pomodoro timer -->
-  <div id="pomo_timer" style="display: none;">
-     <h1 id="pomo"><b>TURN   #</b>1<br /><br />15:00</h1> <br />
-     <button id="end_session" onclick="endSession()">END SESSION</button><br/><br/>
-     <div id="pomo_box"></div>
-  </div>
-
   <!-- create a form to take input and store them in variables to be passed in the api post request from the script -->
-    <p id="name"></p>
-  <div style="margin: 2.2em auto; width: 400px;">
-    <form action="/" id="input_data" style="display: none; text-align: justify;">
-      Your Goal : <input type="text" name="event_summary"> <br /><br />
-      Start Date : <select class="date-day" name="event_date">
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-            </select>
-            <select name="event_date" class="date-month">
-                <option value="01">January</option>
-                <option value="02">February</option>
-                <option value="03">March</option>
-                <option value="04">April</option>
-                <option value="05">May</option>
-                <option value="06">June</option>
-                <option value="07">July</option>
-                <option value="08">August</option>
-                <option value="09">September</option>
-                <option value="10">Octuber</option>
-                <option value="11">November</option>
-                <option value="12">December</option>
-            </select>
-            <select class="date-year" name="event_date">
-                <option value="2018">2018</option>
-                <option value="2019">2019</option>
-                <option value="2020">2020</option>
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-            </select> <br /> <br />
-      Start Time : <select class="time-hour" name="event_time">
-                <option value="00">00</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-            </select> :
-            <select class="time-min" name="event_time">
-                <option value="00">00</option>
-                <option value="01">01</option>
-                <option value="02">02</option>
-                <option value="03">03</option>
-                <option value="04">04</option>
-                <option value="05">05</option>
-                <option value="06">06</option>
-                <option value="07">07</option>
-                <option value="08">08</option>
-                <option value="09">09</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-                <option value="13">13</option>
-                <option value="14">14</option>
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-                <option value="32">32</option>
-                <option value="33">33</option>
-                <option value="34">34</option>
-                <option value="35">35</option>
-                <option value="36">36</option>
-                <option value="37">37</option>
-                <option value="38">38</option>
-                <option value="39">39</option>
-                <option value="40">40</option>
-                <option value="41">41</option>
-                <option value="42">42</option>
-                <option value="43">43</option>
-                <option value="44">44</option>
-                <option value="45">45</option>
-                <option value="46">46</option>
-                <option value="47">47</option>
-                <option value="48">48</option>
-                <option value="49">49</option>
-                <option value="50">50</option>
-                <option value="51">51</option>
-                <option value="52">52</option>
-                <option value="53">53</option>
-                <option value="54">54</option>
-                <option value="55">55</option>
-                <option value="56">56</option>
-                <option value="57">57</option>
-                <option value="58">58</option>
-                <option value="59">59</option>
-            </select> <br /> <br />
-      Timer Lengths : <select name="timer_config" id="timer_len">
-                <option value="15">15</option>
-                <option value="16">16</option>
-                <option value="17">17</option>
-                <option value="18">18</option>
-                <option value="19">19</option>
-                <option value="20">20</option>
-                <option value="21">21</option>
-                <option value="22">22</option>
-                <option value="23">23</option>
-                <option value="24">24</option>
-                <option value="25">25</option>
-                <option value="26">26</option>
-                <option value="27">27</option>
-                <option value="28">28</option>
-                <option value="29">29</option>
-                <option value="30">30</option>
-                <option value="31">31</option>
-                <option value="32">32</option>
-                <option value="33">33</option>
-                <option value="34">34</option>
-                <option value="35">35</option>
-                <option value="36">36</option>
-                <option value="37">37</option>
-                <option value="38">38</option>
-                <option value="39">39</option>
-                <option value="40">40</option>
-                <option value="41">41</option>
-                <option value="42">42</option>
-                <option value="43">43</option>
-                <option value="44">44</option>
-                <option value="45">45</option>
-            </select> mins. pomodoroes
-            <select name="timer_config" id="break_len">
-                <option value="02">2</option>
-                <option value="03">3</option>
-                <option value="04">4</option>
-                <option value="05">5</option>
-                <option value="06">6</option>
-                <option value="07">7</option>
-                <option value="08">8</option>
-                <option value="09">9</option>
-                <option value="10">10</option>
-                <option value="11">11</option>
-                <option value="12">12</option>
-            </select> mins. break <br /><br />
-      Repeat every <select class="" name="event_interval">
-                      <option value="1">1</option>
-                      <option value="2">2</option>
-                      <option value="3">3</option>
-                      <option value="4">4</option>
-                  </select> days <br /> <br />
-    </form>
-    <button id="event_submit" onclick="insertEvent()" style="display: none;">Commit</button>
-
+  <div id="commit-div">
+    <p id="name" style="margin: 0 0 1.2em 0;"></p>
+      <form action="/" id="input_data" style="display: none; text-align: justify;">
+      <b>  Your Goal : </b>&nbsp; <input type="text" name="event_summary"> <br /><br />
+      <b>  Start Date : </b>&nbsp; <select class="date-day" name="event_date">
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+              </select>
+              <select name="event_date" class="date-month">
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">Octuber</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+              </select>
+              <select class="date-year" name="event_date">
+                  <option value="2018">2018</option>
+                  <option value="2019">2019</option>
+                  <option value="2020">2020</option>
+                  <option value="2021">2021</option>
+                  <option value="2022">2022</option>
+              </select> <br /> <br />
+      <b>  Start Time : </b>&nbsp; <select class="time-hour" name="event_time">
+                  <option value="00">00</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+              </select> :
+              <select class="time-min" name="event_time">
+                  <option value="00">00</option>
+                  <option value="01">01</option>
+                  <option value="02">02</option>
+                  <option value="03">03</option>
+                  <option value="04">04</option>
+                  <option value="05">05</option>
+                  <option value="06">06</option>
+                  <option value="07">07</option>
+                  <option value="08">08</option>
+                  <option value="09">09</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+                  <option value="13">13</option>
+                  <option value="14">14</option>
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                  <option value="32">32</option>
+                  <option value="33">33</option>
+                  <option value="34">34</option>
+                  <option value="35">35</option>
+                  <option value="36">36</option>
+                  <option value="37">37</option>
+                  <option value="38">38</option>
+                  <option value="39">39</option>
+                  <option value="40">40</option>
+                  <option value="41">41</option>
+                  <option value="42">42</option>
+                  <option value="43">43</option>
+                  <option value="44">44</option>
+                  <option value="45">45</option>
+                  <option value="46">46</option>
+                  <option value="47">47</option>
+                  <option value="48">48</option>
+                  <option value="49">49</option>
+                  <option value="50">50</option>
+                  <option value="51">51</option>
+                  <option value="52">52</option>
+                  <option value="53">53</option>
+                  <option value="54">54</option>
+                  <option value="55">55</option>
+                  <option value="56">56</option>
+                  <option value="57">57</option>
+                  <option value="58">58</option>
+                  <option value="59">59</option>
+              </select> <br /> <br />
+      <b>  Timer Config : </b>&nbsp; mins. <select name="timer_config" id="timer_len">
+                  <option value="15">15</option>
+                  <option value="16">16</option>
+                  <option value="17">17</option>
+                  <option value="18">18</option>
+                  <option value="19">19</option>
+                  <option value="20">20</option>
+                  <option value="21">21</option>
+                  <option value="22">22</option>
+                  <option value="23">23</option>
+                  <option value="24">24</option>
+                  <option value="25">25</option>
+                  <option value="26">26</option>
+                  <option value="27">27</option>
+                  <option value="28">28</option>
+                  <option value="29">29</option>
+                  <option value="30">30</option>
+                  <option value="31">31</option>
+                  <option value="32">32</option>
+                  <option value="33">33</option>
+                  <option value="34">34</option>
+                  <option value="35">35</option>
+                  <option value="36">36</option>
+                  <option value="37">37</option>
+                  <option value="38">38</option>
+                  <option value="39">39</option>
+                  <option value="40">40</option>
+                  <option value="41">41</option>
+                  <option value="42">42</option>
+                  <option value="43">43</option>
+                  <option value="44">44</option>
+                  <option value="45">45</option>
+              </select> pomodoroes
+              <select name="timer_config" id="break_len">
+                  <option value="02">2</option>
+                  <option value="03">3</option>
+                  <option value="04">4</option>
+                  <option value="05">5</option>
+                  <option value="06">6</option>
+                  <option value="07">7</option>
+                  <option value="08">8</option>
+                  <option value="09">9</option>
+                  <option value="10">10</option>
+                  <option value="11">11</option>
+                  <option value="12">12</option>
+              </select> break <br /><br />
+        Repeat every &nbsp;<select class="" name="event_interval">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                    </select>&nbsp;days <br /> <br />
+      </form>
+      <button id="event_submit" onclick="insertEvent()">COMMIT</button>
   </div>
+<button id="add_event" onclick="addEvent()">+</button>
 
-<pre id="declare" style="text-decoration: none;"></pre>
-<button id="add_event" onclick="addEvent()" style="display: none;">Add Event +</button>
-
-<div style="margin:2.3em;">
-  <!-- listing pomo events -->
-  <div style="display: inline-block; padding:0.5em 1.2em; margin:0 2.1em; text-align: justify;"><pre id="list" ></pre></div>
+<div id="list-container">
   <!-- user database listing -->
-  <div style="display: inline-block; padding:0.5em 1.2em; margin:0 2.1em; text-align: justify;"><pre id="track" ></pre></div>
+  <div style="float: right; margin:0 1em;"><pre id="track" ><p style="text-decoration: underline;">Completed Goals :</p></pre></div>
+  <!-- listing pomo events -->
+  <div style="float: left; margin:0 1.8em;"><pre id="list" ><p style="text-decoration: underline;">Coming Up :</p><br/></pre></div>
 </div>
 
 

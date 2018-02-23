@@ -13,21 +13,22 @@ var data_name = '';
 var data_pomo = 0;
 var data_break = 0;
 var interval = '';
+var eventId = '';
 
-
-function beginTimer(pomo_len, break_len, name, user){
+function beginTimer(pomo_len, break_len, name, user, id){
   var pomoDuration = pomo_len*60;
   var breakDuration = break_len*60;
   data_name = name;
   data_pomo = pomo_len;
   data_break = break_len;
   data_user = user;
+  eventId = id;
   interval = setInterval(timeIt, 100);
   function timeIt(){
   if(pomodoroes < 21){
     if(Pcounter < pomoDuration){
       Pcounter++;
-      pomo.innerHTML = "<b>TURN #</b>" + pomodoroes + "<br /><br />" +tim(pomoDuration - Pcounter);
+      pomo.innerHTML = "<b>TURN </b>#" + pomodoroes + "<br /><br />" +tim(pomoDuration - Pcounter);
     } else if(pomoDuration == Pcounter && !Bcounter){
       pomodoroes++;
       Bcounter = 1;
@@ -57,6 +58,7 @@ function endSession(){
   // send data to firebase
   // senData(data_num, data_name);
   upLoad();
+  updateComplete(eventId, data_num);
   function upLoad(){
     var data = {
       "pomoDuration": data_pomo,
@@ -76,6 +78,28 @@ function endSession(){
   pomo_box.innerHTML = "";
   listUpcomingEvents();
 }
+
+function updateComplete(eventId, data_num){
+  var newD = data_num + " X " + data_pomo + " minutes.";
+  var event = gapi.client.calendar.events.get({
+    "calendarId":'primary',
+    "eventId": eventId,
+  });
+  event.colorId = "10";
+  event.description = newD;
+console.log(event);
+console.log(eventId);
+console.log(data_num);
+  var request = gapi.client.calendar.events.patch({
+    'calendarId': 'primary',
+    'eventId': eventId,
+    'resource': event
+  });
+  request.execute(function(done){
+    console.log(done);
+  });
+}
+
 
 //  to encode uid according to firebase terms.
 function encode(str){

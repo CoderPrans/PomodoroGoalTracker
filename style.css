@@ -1,0 +1,143 @@
+html, body {
+  text-align: center;
+  /* font-family:  sans-serif; */
+  background-color: ivory;
+  margin: 0;
+  padding: 0;
+}
+#header {
+  margin-top: 0;
+  padding: 0.8em;
+  background: blueviolet;
+  color: white;
+  font-family: sans-serif;
+}
+#header h2{
+  margin: 0;
+}
+#signin-status {
+  padding:0 0.8em;
+  width: 5em;
+  font-family: sans-serif;
+}
+#authorize-button {
+  display: none;
+  background: darkmagenta;
+  border-style: none;
+  padding: 0.9em 0.3em 0.3em 0.3em;
+  font-size: 1em;
+  color: white;
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+#signout-button {
+  display: none;
+  background: darkmagenta;
+  border-style: none;
+  padding: 0.3em;
+  font-size: 0.9em;
+  color: white;
+  border-radius: 0.2em;
+  cursor: pointer;
+}
+#timer-zone {
+  padding: 0.2em 0.3em 0.9em 0.2em;
+  background: cornflowerblue;
+  color: white;
+}
+#countdown {
+  margin: 0 auto 0.9em auto;
+
+}
+#pomo-div {
+  width: 10em;
+  margin: 1em auto 2.5em auto;
+  padding: 0.9em 0.9px;
+  background: tomato;
+  padding: 0.7em;
+  border-radius: 50%;
+  box-shadow: 0.4em 0.4em 1.5em 0.1em rgba(0, 0, 0, 0.5);
+  border-style: outset;
+}
+#end_session {
+  background-color: indianred;
+  border-style: none;
+  font-size: 1.3em;
+  padding: 0.3em;
+  color: white;
+  cursor: pointer;
+  border-radius: 0.25em;
+}
+#pomo_box {
+  background: lemonchiffon;
+  width: 335px;
+  height: 7.5em;
+  padding: 0.35em;
+  padding-bottom: 0px;
+  margin: 3.75em auto 3.25em auto;
+  text-align: justify;
+  border-style: inset;
+}
+#pomo_box img {
+  margin: 0.15em;
+}
+#commit-div {
+  padding:1em;
+  background: lightblue;
+  text-align: center;
+}
+#commit-div button {
+  display: none;
+  margin: 0 auto;
+  cursor: pointer;
+  padding: 0.3em 0.5em;
+  font-size: 0.9em;
+  border-style: none;
+  border-radius: 0.2em;
+  background-color: darkolivegreen;
+  color: white;
+}
+#input_data {
+  margin: 0 auto;
+  padding: 2.6em auto;
+  width: 370px;
+}
+#input_data select {
+  border-style: none;
+  background-color: ivory;
+}
+#add_event {
+  display: none;
+  font-size: 2.2em;
+  float: right;
+  border-style: none;
+  border-radius: 50%;
+  background: mediumspringgreen;
+  padding:0 0.28em;
+  color: white;
+  margin:0.8em;
+  cursor: pointer;
+}
+pre {
+   padding: 1em;
+   text-align: justify;
+   /* border-style: solid;
+   border-color: rgba(0, 0, 0, 0.7);
+   border-width: 0.3em; */
+   /* background: lightsalmon; */
+}
+#list-container{
+  padding:3em 2.3em;
+  font-size: 1.1em;
+  /* background-color: khaki; */
+}
+li {
+  list-style: none;
+  padding: 0.5em;
+}
+li:nth-child(odd){
+  background: moccasin;
+}
+p {
+  padding: 0.3em;
+}

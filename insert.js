@@ -92,9 +92,12 @@
       if(document.getElementById("input_data").style.display == 'none'){
         document.getElementById("input_data").style.display = 'block';
         document.getElementById("event_submit").style.display = 'block';
-        document.getElementById("add_event").style.display = 'none';
         var name = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
         document.getElementById("name").innerHTML = "Commit a goal " +  "<b>" + name + "</b>";
+      } else {
+        document.getElementById("input_data").style.display = 'none';
+        document.getElementById("event_submit").style.display = 'none';
+        document.getElementById("name").innerHTML = "";
       }
      }
 
@@ -148,8 +151,6 @@
 
       request.execute(function(event) {
         console.log(event);
-        var pre = document.querySelector("#declare");
-        pre.innerHTML = "Event created: " + "<a href='"+ event.htmlLink + "'>"+ event.summary.slice(6) + "</a>";
         window.location.reload();
       });
 
