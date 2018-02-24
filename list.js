@@ -20,6 +20,23 @@ function listUpcomingEvents() {
     console.log(events);
 
     var goals = events.filter(function(x){ return x.summary.slice(0, 6) == ":pomo:" });
+    var data_user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail().slice(0, -10);
+    var pomo_len = 0;
+    var break_len = 0;
+    var ref = database.ref(encode(data_user));
+    var goalRef = ref.child(goals[0].summary.slice(6));
+    console.log(goalRef);
+    goalRef.once("value", gotData, errData);
+    function gotData(snap){
+      if(snap.val() !== null){
+        pomo_len = Number(snap.val().pomoDuration);
+        break_len = Number(snap.val().breakDuration);
+      }
+    }
+    function errData(err){
+      console.log(err);
+    }
+
     console.log(goals);
     if (goals.length > 0) {
       for (i = 0; i < 5; i++) {
@@ -28,7 +45,7 @@ function listUpcomingEvents() {
           if (!when) {
             when = event.start.date;
           }
-          appendPre("<b>"+event.summary.slice(6) +'</b><br /><br />'+  format(when) + '<br /><i>'+ "pomo: " + Number(event.description.slice(0, 2)) + "' break: " + Number(event.description.slice(8, 10)) + "'</i><br/>");
+          appendPre("<b>"+event.summary.slice(6) +'</b><br /><br />'+  format(when));
       }
       var eventId = goals[0].id; // next most recent event's id
       // countdown to event
@@ -43,9 +60,6 @@ function listUpcomingEvents() {
       var s = '';
       var pomo_timer = document.getElementById("pomo_timer");
       var para = document.getElementById("starts");
-      var data_user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail().slice(0, -10);
-      var pomo_len = Number(goals[0].description.slice(0,2));
-      var break_len = Number(goals[0].description.slice(8,10));
 
       para.innerHTML = "<b>" + goals[0].summary.slice(6) +"</b>"+ ' starts in :';
 
@@ -73,7 +87,6 @@ function listUpcomingEvents() {
 }
 
 function listData(){
-  var database = firebase.database();
   var data_user = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail().slice(0, -10);
   var data_user_encoded = encode(data_user);
   var userRef = database.ref(data_user_encoded);
@@ -83,29 +96,42 @@ function listData(){
     var pre = document.getElementById("track");
     var instance = document.createElement("p");
     if(snap.val() !== null){
+      pre.innerHTML = '';
       var dataSnap = snap.val();
       var goals = Object.keys(dataSnap);
       for(var i = 0; i < goals.length; i++){
         var goalsData = dataSnap[goals[i]];
         var li1 = document.createElement("p");
-        li1.innerHTML = "<b>"+goals[i]+"</b><br/><i>pomo: "+goalsData.pomoDuration+"' break: "+goalsData.breakDuration+"'</i><br/>";
-        // var goalMeta = document.createTextNode();
+        li1.innerHTML = "<b>"+goals[i]+"</b><br/><i>pomo: "+goalsData.pomoDuration+"' break: "+goalsData.breakDuration+"' target: "+goalsData.target+"</i><br/>";
         instance.appendChild(li1);
-        // var hr = document.createElement("hr");
-        // instance.appendChild(hr);
         for(var j in goalsData){
           if(j === "breakDuration") break;
           var timeStamp = j.slice(0, -3);
           var li2 = document.createElement("p");
-          li2.style.background = 'moccasin';
-          li2.innerHTML = timeStamp + " > " + goalsData[j] + '<br/>';
-          // var session = document.createTextNode();
+          if(goalsData[j] == goalsData.target){
+            li2.style.background = 'lawngreen';
+          } else { li2.style.background = 'coral'; }
+          li2.innerHTML = timeStamp + "  >  " + goalsData[j] + ' / ' + goalsData.target;
+          var p = document.createElement("p");
+          var img = '<img id="img"src="pomo_img.png" width="18px"> &nbsp; ';
+          var g_img = '<img id="img"src="pomo_img_grey.png" style="opacity: 0.7;" width="18px"> &nbsp;';
+          for(var k = 0; k < goalsData.target; k++){
+            if(k < goalsData[j]){
+              appendHtml(p, img);
+            } else {
+              appendHtml(p, g_img);
+            }
+          }
           instance.appendChild(li2);
+          instance.appendChild(p);
         }
+        var totalCount = document.createElement("p");
+        totalCount.innerHTML = "total pomodoroes collected = " + goalsData.total;
+        instance.appendChild(totalCount);
       }
     pre.appendChild(instance);
   } else {
-     pre.innerHTML = "Completed goal records will appear here.. "
+     pre.innerHTML = "Completed sessions will appear here.. "
   }
   }
 

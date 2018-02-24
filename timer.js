@@ -60,16 +60,22 @@ function endSession(){
   upLoad();
   updateComplete(eventId, data_num);
   function upLoad(){
-    var data = {
-      "pomoDuration": data_pomo,
-      "breakDuration": data_break
+    var reF = data_user_encoded + '/' + data_name;
+    var goalRef = database.ref(reF);
+    var total = '';
+    goalRef.once("value", gotData, errData);
+    function gotData(snap){
+      if(snap.val() !== null){
+         total = snap.val().total;
+      }
     }
-
-    var userRef = database.ref(data_user_encoded);
-    var goalRef = userRef.child(data_name);
-
-    goalRef.update(data);
+    function errData(err){
+      console.log(err);
+    }
+    total += data_num;
+    total = Number(total);
     goalRef.child(timeStamp).set(data_num);
+    goalRef.child("total").set(total);
     window.location.reload();
   }
 
@@ -98,18 +104,6 @@ console.log(data_num);
   request.execute(function(done){
     console.log(done);
   });
-}
-
-
-//  to encode uid according to firebase terms.
-function encode(str){
-  str = str.replace(/\./g, '-');
-  str = str.replace(/\$/g, '&');
-  str = str.replace(/#/g, '@');
-  str = str.replace(/\[/g, '(');
-  str = str.replace(/\]/g, ')');
-  str = str.replace(/\//g, "_");
-  return str;
 }
 
 function appendHtml(el, str) {

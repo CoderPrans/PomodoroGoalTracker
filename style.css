@@ -140,4 +140,5 @@ li:nth-child(odd){
 }
 p {
   padding: 0.3em;
+  text-align: center;
 }

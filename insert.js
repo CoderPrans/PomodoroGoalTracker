@@ -94,10 +94,12 @@
         document.getElementById("event_submit").style.display = 'block';
         var name = gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getName();
         document.getElementById("name").innerHTML = "Commit a goal " +  "<b>" + name + "</b>";
+        document.getElementById("add_event").innerHTML = '!';
       } else {
         document.getElementById("input_data").style.display = 'none';
         document.getElementById("event_submit").style.display = 'none';
         document.getElementById("name").innerHTML = "";
+        document.getElementById("add_event").innerHTML = '+';
       }
      }
 
@@ -117,6 +119,10 @@
       var dateTime = value_year + "-" + value_month + "-" + value_day + "T" + value_hour + ":" + value_min + ":00+05:30";
       var eventInterval = document.getElementsByName("event_interval")[0].value;
       var description = document.getElementById("timer_len").value + "' pomo" + document.getElementById("break_len").value + "' break";
+      var endDate_day = document.getElementsByName("event_end")[0].value;
+      var endDate_month = document.getElementsByName("event_end")[1].value;
+      var endDate_year = document.getElementsByName("event_end")[2].value;
+      var until = "" + endDate_year + endDate_month + endDate_day;
 
       var event = {
         'summary': eventName,
@@ -131,7 +137,7 @@
         },
         'colorId': '11',
         'recurrence': [
-          'RRULE:FREQ=DAILY;INTERVAL=' + eventInterval
+          'RRULE:FREQ=DAILY;UNTIL='+ until +';INTERVAL=' + eventInterval
         ],
         'reminders': {
           'useDefault': false,
@@ -141,7 +147,7 @@
           }]
         }
       };
-
+      console.log(event);
       var request = gapi.client.calendar.events.insert({
         'calendarId': 'primary',
         'resource': event
@@ -153,7 +159,33 @@
         console.log(event);
         window.location.reload();
       });
-
           console.log(event);
+
+        upload();
+        function upload(){
+          var data = {
+            "pomoDuration": document.getElementById("timer_len").value,
+            "breakDuration": document.getElementById("break_len").value,
+            "target": document.getElementById("target").value,
+            "total": 0
+          }
+          var username = encode(gapi.auth2.getAuthInstance().currentUser.get().getBasicProfile().getEmail().slice(0, -10));
+          var userRef = database.ref(username);
+          var goalRef = userRef.child(eventName.slice(6));
+          goalRef.set(data);
+      }
+
+
     }else{ alert("fill in goal name !");}
+  }
+
+  //  to encode uid according to firebase terms.
+  function encode(str){
+    str = str.replace(/\./g, '-');
+    str = str.replace(/\$/g, '&');
+    str = str.replace(/#/g, '@');
+    str = str.replace(/\[/g, '(');
+    str = str.replace(/\]/g, ')');
+    str = str.replace(/\//g, "_");
+    return str;
   }
