@@ -39,8 +39,9 @@ function listUpcomingEvents() {
 
     console.log(goals);
     if (goals.length > 0) {
-      for (i = 0; i < 5; i++) {
+      for (i = 0; i < goals.length; i++) {
         var event = goals[i];
+        console.log(goals[i]);
         var when = event.start.dateTime;
           if (!when) {
             when = event.start.date;
