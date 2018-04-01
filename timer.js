@@ -23,7 +23,7 @@ function beginTimer(pomo_len, break_len, name, user, id){
   data_break = break_len;
   data_user = user;
   eventId = id;
-  interval = setInterval(timeIt, 100);
+  interval = setInterval(timeIt, 1000);
   function timeIt(){
   if(pomodoroes < 21){
     if(Pcounter < pomoDuration){
