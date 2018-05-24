@@ -34,12 +34,16 @@ function beginTimer(pomo_len, break_len, name, user, id){
       Bcounter = 1;
       var img = '<img id="img"src="pomo_img.png" width="32px">';
       appendHtml(pomo_box, img);
+      // play timer sound
+      document.getElementById('timer-bling').play();
     } else {
       Bcounter++;
       pomo.innerHTML = "<b>BREAK</b>" + "<br /><br />" +tim(breakDuration - Bcounter);
        if(Bcounter == breakDuration){
          Bcounter = 0;
          Pcounter = 0;
+         // play timer sound
+         document.getElementById('timer-bling').play();
        }
     }
   } else {
